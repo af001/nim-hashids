@@ -184,6 +184,10 @@ proc decodeHelper(hashids: Hashids, hash: string): seq[int] =
     return decoded
 
 
+proc newStringI[T](size: int): string =
+    newStringOfCap(size)
+    
+
 proc createHashids*(salt: string, minHashLength: int, hashidsAlphabet: string): Hashids =
     ## Creates and returns a new ``Hashids`` object with the specified salt, minimum hash length,
     ## and alphabet.
