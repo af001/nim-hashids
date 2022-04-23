@@ -4,12 +4,12 @@
 # Released under the MIT open source license.
 
 
-import future
 import math
 import strutils
 import sequtils
 import re
 import unicode
+import sugar
 
 
 const defaultAlphabet*: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
@@ -191,7 +191,12 @@ proc createHashids*(salt: string, minHashLength: int, hashidsAlphabet: string): 
     let hashids: Hashids = Hashids(salt: salt)
     hashids.minHashLength = max(minHashLength, 0)
 
-    var separators: string = lc[x | (x <- "cfhistuCFHISTU", x in hashidsAlphabet), char].join()
+    # Replace lc from future
+    var separators: string = collect(newStringI(4)):
+        for x in "cfhistuCFHISTU":
+            if x in hashidsAlphabet:
+                x
+
     var alphabet: string = ""
     for index in 0..high(hashidsAlphabet):
         let letter: char = hashidsAlphabet[index]
